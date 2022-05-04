@@ -4,3 +4,5 @@ questions will allow students to write tests about Binary Search Trees, Binary H
 Trees and Sorting. The plugin will support the automatic generation of questions and will
 be able to randomly generate questions within a specific format so that students writing tests
 can be given their own version of the relevant questions. The plugin will include a widget allowing students and lecturers to construct and edit trees.
+
+[![1024mb](https://circleci.com/gh/1024mb-Wits/1024mb/tree/main>.svg?style=svg)](https://app.circleci.com/pipelines/github/1024mb-Wits)
