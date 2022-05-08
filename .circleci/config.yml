@@ -18,7 +18,4 @@ workflows:
   test_my_app:
     jobs:
       - build_and_test
-          filters:
-            branches:
-              only: AVL_widget # only deploy when on main
 
