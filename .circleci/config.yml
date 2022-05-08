@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@4.7.0
+  codecov: codecov/codecov@3.2.2
 
 jobs:
   build_and_test:
@@ -21,4 +22,6 @@ workflows:
           filters:
             branches:
               only: AVL_widget # only deploy when on main
-
+      post-steps:
+            - codecov/upload
+  
