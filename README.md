@@ -5,5 +5,4 @@ Trees and Sorting. The plugin will support the automatic generation of questions
 be able to randomly generate questions within a specific format so that students writing tests
 can be given their own version of the relevant questions. The plugin will include a widget allowing students and lecturers to construct and edit trees.
 
-
-[![1024mb-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin/AVL_widget.svg?style=svg)](https://circleci.com/gh/1024mb-Wits/moodle_plugin/AVL_widget)
+[![1024mb-Wits](https://app.circleci.com/pipelines/github/1024mb-Wits/moodle_plugin?branch=AVL_widget&filter=all.svg?style=svg)](https://app.circleci.com/pipelines/github/1024mb-Wits/moodle_plugin?branch=AVL_widget&filter=all)
