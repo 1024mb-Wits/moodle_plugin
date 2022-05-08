@@ -6,4 +6,4 @@ be able to randomly generate questions within a specific format so that students
 can be given their own version of the relevant questions. The plugin will include a widget allowing students and lecturers to construct and edit trees.
 
 
-[![1024mb-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin.svg?style=svg)](https://app.circleci.com/gh/1024mb-Wits/moodle_plugin)
+
