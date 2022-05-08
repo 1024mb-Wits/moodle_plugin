@@ -7,3 +7,4 @@ can be given their own version of the relevant questions. The plugin will includ
 
 
 [![1024mb-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget.svg?style=shield)](https://app.circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget)
+[![codecov](https://codecov.io/gh/1024mb-Wits/moodle_plugin/branch/main/graph/badge.svg?token=1f3a8833-b4c9-4af6-9302-9d80ba8ac397)](https://codecov.io/gh/1024mb-Wits/moodle_plugin)
