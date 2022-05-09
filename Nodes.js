@@ -491,7 +491,24 @@ function printTree(a) {
 }
 
 function DrawAllEdges() {
-
+    for (let i = 0; i < Added_Edges.length; i++) {
+        var Val_1 = Added_Edges[i].GetNode_1();
+        var Val_2 = Added_Edges[i].GetNode_2();
+        var Node_1;
+        var Node_2;
+        for (let j = 0; j < Added_Nodes.length; j++) {
+            if (Val_1 == Added_Nodes[j].GetNodeNum()) {
+                Node_1 = Added_Nodes[j];
+            }
+            else if (Val_2 == Added_Nodes[j].GetNodeNum()) {
+                Node_2 = Added_Nodes[j];
+            }
+        }
+        graphics.save();
+        graphics.strokeStyle = 'black';
+        graphics.strokeLine(Node_1.GetX(), Node_1.GetY(), Node_2.GetX(), Node_2.GetY());
+        graphics.restore();
+    }
 }
 
 
@@ -540,7 +557,7 @@ function FxIndDel(Del_At) {
 
 function deleteNode(nodenum, nodeindx) {
     //var Node_Selected = Check_Clicked(evt);
-    
+
     if (nodenum == Selected_Nodes[0] && Selected_Nodes[1] != -1) {
         Selected_Nodes[0] = Selected_Nodes[1];
         Selected_Nodes[1] = -1;
@@ -552,16 +569,16 @@ function deleteNode(nodenum, nodeindx) {
     else if (nodenum == Selected_Nodes[1]) {
         Selected_Nodes[1] = -1;
     }
-    console.log("deleting node : " + nodenum );
+    console.log("deleting node : " + nodenum);
 
     count--;
     console.log("Selected Nodes are", Selected_Nodes);
-    for (let i =0; i < Added_Nodes.length ; i ++){
-        if (Added_Nodes[i].GetLeftChild() == Node_Selected){
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetLeftChild() == Node_Selected) {
             Added_Nodes[i].SetLeftChild(null);
         }
 
-        if ( Added_Nodes[i].GetRightChild() == Node_Selected){
+        if (Added_Nodes[i].GetRightChild() == Node_Selected) {
             Added_Nodes[i].SetRightChild(null);
         }
 
@@ -573,26 +590,26 @@ function deleteNode(nodenum, nodeindx) {
             //we need to delete this edge
             Added_Edges.splice(i, 1);
             i--;
-            
+
         }
     }
-    const {x,y,Num_In_Node} = Added_Nodes[nodeindx] ;
+    const { x, y, Num_In_Node } = Added_Nodes[nodeindx];
 
     Added_Nodes.splice(nodeindx, 1);
     FxIndDel(nodeindx);
     console.log(Added_Nodes.length);
-    
-    Added_Nodes.map( (Node) => {
-        const {x,y,Num_In_Node} = Node  ;
-        console.log({x,y,Num_In_Node});
+
+    Added_Nodes.map((Node) => {
+        const { x, y, Num_In_Node } = Node;
+        console.log({ x, y, Num_In_Node });
     })
-    
+
     n--;
 
     console.log("Edges are -->", Added_Edges);
     //const {x,y,Num_In_Node} = Added_Nodes[n]   ;
 
-    return  {x,y,Num_In_Node};
+    return { x, y, Num_In_Node };
     //
 
 
@@ -792,6 +809,18 @@ function paintComponent(whichSelection) { // gets the operation from the user
             break;
     }
 }
+
+function SearchNodes(num) {
+    let found = false;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetNodeNum() == num) {
+            found = true;
+        }
+    }
+    return found;
+}
+
+
 function doNodeOperations(evt) {
     if (addNodes) {
         num = getVal();//gets the number to be drawn inside a node
