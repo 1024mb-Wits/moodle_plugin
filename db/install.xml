@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="question/type/trees/db" VERSION="20200531" COMMENT="XMLDB file for Moodle question/type/trees"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="qtype_trees_options" COMMENT="Options for tree questions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id."/>
+        <FIELD NAME="q_type" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="preorder" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="inorder" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="postorder" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="bstvalues" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="bst_string" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lecturer_tree" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="requested_properties" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="properties_string" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avlvalues" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avl_string" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+       
+         </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="questionid" TYPE="foreign-unique" FIELDS="questionid" REFTABLE="question" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
