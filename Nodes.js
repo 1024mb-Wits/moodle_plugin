@@ -378,14 +378,43 @@ function DrawNewNode(Node, color) { //draws a new node
 
 
 function Move_Other_Nodes() {//gets root node from canvas
-
-
+    var highest = 1000000;
+    var highest_node;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetY() < highest && Added_Nodes[i].GetNodeNum() !== -1) {
+            highest_node = Added_Nodes[i];
+            highest = Added_Nodes[i].GetY();
+        }
+    }
+    return highest_node.GetLeftChild();
 }
 
 function Apply_Tree_Move(x_change, y_change, Root_Num) {
 
+    for (let j = 1; j < subtree.length; j++) {
 
+        for (let i = 0; i < Added_Nodes.length; i++) {
+            if (subtree[j].GetNodeNum() == Added_Nodes[i].GetNodeNum()) {
+                ("Changing " + subtree[j]);
+                Added_Nodes[i].SetX(Added_Nodes[i].GetX() + x_change);
+                Added_Nodes[i].SetY(Added_Nodes[i].GetY() + y_change);
+            }
+
+        }
+    }
 }
+
+
+function Check_NodeNum_Exists(num) {
+    var unique_num = true;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetNodeNum() == num) {
+            unique_num = false;
+        }
+    }
+    return unique_num;
+}
+
 
 
 function joinNodes(check) {
@@ -502,7 +531,10 @@ function PrintSubTree() {
 }
 
 function printTree(a) {
+    var b = a;
 
+    PreOrderTraversal(Node_Selected);
+    return PrintSubTree();
 }
 
 function DrawAllEdges() {
