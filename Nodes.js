@@ -477,12 +477,27 @@ function joinNodes(check) {
 
 
 function PreOrderTraversal(Root) {
+    if (Root == null) {
+        return;
+    }
+    subtree.push(Root);
+    PreOrderTraversal(Root.GetLeftChild());
+    PreOrderTraversal(Root.GetRightChild());
 
-
-
+    return ("Tree Traversed");
 }
 
 function PrintSubTree() {
+    nodenums = new Array();
+
+    for (let i = 0; i < subtree.length; i++) {
+
+        nodenums.push(subtree[i].GetNodeNum());
+
+    }
+    console.log(nodenums);
+
+    return nodenums;
 
 }
 
