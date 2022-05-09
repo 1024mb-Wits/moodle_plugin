@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<!--
+   This web page does the minimal setup for using mouse events along
+   with 2D canvas graphics.
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Trees</title>
+    <style>
+        /* This style section is here to make the canvas more obvious on the
+           page.  It is white on a light gray page background, with a thin
+           black border.  Also, turn off text selection to avoid having
+           selection interfere with mouse action. */
+        body {
+            -webkit-user-select: none; /* turn off text selection  / Webkit */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE 10  */
+            -o-user-select: none;      /* Opera */
+            user-select: none;
+        }
+        canvas {
+            background-color: white;
+            display: block;
+        }
+        #canvasholder {
+            border:2px solid black;
+            float: left; /* This makes the border exactly fit the canvas. */
+        }
+    </style>
+    <script>
+
+        "use strict";  // gives improved error-checking in scripts.
+
+
+        /**
+         * This function returns a string representing a random RGB color.
+         * The returned string can be assigned as the value of graphics.fillStyle
+         * or graphics.strokeStyle.
+         */
+        function randomColorString() {
+            var r = Math.floor(256*Math.random());
+            var g = Math.floor(256*Math.random());
+            var b = Math.floor(256*Math.random());
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
+        class  Node{
+
+            constructor(x,y,Num_In_Node,Arr_Index,Is_Selected){
+                this.x=x; //x coordinate of node
+                this.y=y; //y coordinate of node
+                this.Num_In_Node=Num_In_Node; //number contained inside of node
+                this.Arr_Index=Arr_Index;
+                this.Is_Selected=Is_Selected;
+            }
+
+
+            GetX(){
+
+                return this.x;
+
+            }
+            GetY(){
+
+                return this.y;
+
+            }
+
+            SetX(new_x){
+
+                this.x=new_x
+
+            }
+            SetY(new_y){
+
+                this.y=new_y;
+
+            }
+
+            GetNodeNum(){
+                return this.Num_In_Node;
+            }
+
+            GetArrIndex(){
+                return this.Arr_Index;
+            }
+
+            SetArrIndex(New_Ind){
+                this.Arr_Index=New_Ind;
+            }
+            GetIs_Selected(){
+
+                return this.Is_Selected;
+            }
+            SetIs_Selected(Selected){
+
+                this.Is_Selected=Selected;
+            }
+
+
+        }
+
+        var canvas;    // The canvas element on which we will draw.
+        var graphics;  // A 2D graphics context for drawing on the canvas.
+        var startX, startY;
+        var addNodes,deleteNodes, connectNodes,moveNodes = false ; // a boolean variable that determines whether the user wants to move the nodes or not
+        let n = 0; //Node number
+        var Added_Nodes; //stores all of the nodes that has been added to the canvas
+        Added_Nodes=new Array();
+        var dummyNode = new Node(601,601,-1,n);
+        var previous_x=-1;//x coordinate of node that was selected previously
+        var previous_y=-1; //y coordinate
+        var IsSelected=false;
+        var Node_ToMove;
+        Added_Nodes.push(dummyNode);
+
+
+        function installMouseHandler() {
+
+            var dragging = false;  // set to true when a drag action is in progress.
+            // coordinates of mouse at start of drag.
+            var prevX, prevY;      // previous mouse position during a drag.
+
+            var colorChoice;  // Integer code for the selected color in the "colorChoide"
+                              // popup menu.  The value is assigned in doMouseDown.
+
+            function doMouseDown(evt) {
+                // This function is called when the user presses a button on the mouse.
+                // Only the main mouse button will start a drag.
+                if (dragging) {
+                    return;  // if a drag is in progress, don't start another.
+                }
+                if (evt.button != 0) {
+                    return; // don't respond unless the button is the main (left) mouse button.
+                }
+                var x,y;  // mouse position in canvas coordinates
+
+                var r = canvas.getBoundingClientRect();
+                x = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+                y = Math.round(evt.clientY - r.top);
+                //dragging = true;
+                //addNode(x,y);
+                //var selected_node = new Node(Check_Clicked(x,y));
+
+
+                // round to integer values; some browsers would givar selected_node = new Node(Check_Clicked(x,y));ve non-integers.
+                // (this won't be the case for all mousedowns in all programs)
+                if (dragging) {
+                    startX = prevX = x;
+                    startY = prevY = y;
+                    document.addEventListener("mousemove", doMouseMove, false);
+                    document.addEventListener("mouseup", doMouseUp, false);
+                }
+
+                //colorChoice = Number(document.getElementById("colorChoice").value);
+                // TODO: Anything else to do when mouse is first pressed?
+            }
+
+            function doMouseMove(evt) {
+                // This function is called when the user moves the mouse during a drag.
+                if (!dragging) {
+                    return;  // (shouldn't be possible)
+                }
+                var x,y;  // mouse position in canvas coordinates
+                var r = canvas.getBoundingClientRect();
+                x = Math.round(evt.clientX - r.left);
+                y = Math.round(evt.clientY - r.top);
+
+                /*------------------------------------------------------------*/
+                /* TODO: Add support for more drawing tools. */
+
+                /*------------------------------------------------------------*/
+
+                prevX = x;  // update prevX,prevY to prepare for next call to doMouseMove
+                prevY = y;
+
+            }
+
+            function doMouseUp(evt) {
+                // This function is called when the user releases a mouse button during a drag.
+                if (!dragging) {
+                    return;  // (shouldn't be possible)
+                }
+                dragging = false;
+                document.removeEventListener("mousemove", doMouseMove, false);
+                document.removeEventListener("mouseup", doMouseMove, false);
+            }
+
+            canvas.addEventListener("mousedown", doMouseDown, false);
+
+        } // end installMouseHandler
+
+        /**
+         * This function can be called to add a collection of extra drawing function to
+         * a graphics context, to make it easier to draw basic shapes with that context.
+         * The parameter, graphics, must be a canvas 2d graphics context.
+         *
+         * The following new functions are added to the graphics context:
+         *
+         *    graphics.strokeLine(x1,y1,x2,y2) -- stroke the line from (x1,y1) to (x2,y2).
+         *    graphics.fillCircle(x,y,r) -- fill the circle with center (x,y) and radius r.
+         *    graphics.strokeCircle(x,y,r) -- stroke the circle.
+         *    graphics.fillOval(x,y,r1,r2) -- fill oval with center (x,y) and radii r1 and r2.
+         *    graphics.stokeOval(x,y,r1,r2) -- stroke the oval
+         *    graphics.fillPoly(x1,y1,x2,y2,...) -- fill polygon with vertices (x1,y1), (x2,y2), ...
+         *    graphics.strokePoly(x1,y1,x2,y2,...) -- stroke the polygon.
+         *    graphics.getRGB(x,y) -- returns the color components of pixel at (x,y) as an array of
+         *         four integers in the range 0 to 255, in the order red, green, blue, alpha.
+         *
+         * (Note that "this" in a function that is called as a member of an object refers to that
+         * object.  Here, this will refer to the graphics context.)
+         */
+        function addGraphicsContextExtras(graphics) {
+            graphics.strokeLine = function(x1,y1,x2,y2) {
+                this.beginPath();
+                this.moveTo(x1,y1);
+                this.lineTo(x2,y2);
+                this.stroke();
+            }
+            graphics.fillCircle = function(x,y,r) {
+                this.beginPath();
+                this.arc(x,y,r,0,2*Math.PI,false);
+                this.fill();
+            }
+            graphics.strokeCircle = function(x,y,radius) {
+                this.beginPath();
+                this.arc(x,y,radius,0,2*Math.PI,false);
+                this.stroke();
+            }
+            graphics.fillPoly = function() {
+                if (arguments.length < 6)
+                    return;
+                this.beginPath();
+                this.moveTo(arguments[0],arguments[1]);
+                for (var i = 2; i+1 < arguments.length; i = i + 2) {
+                    this.lineTo(arguments[i],arguments[i+1]);
+                }
+                this.closePath();
+                this.fill();
+            }
+            graphics.strokePoly = function() {
+                if (arguments.length < 4)
+                    return;
+                this.beginPath();
+                this.moveTo(arguments[0],arguments[1]);
+                for (var i = 2; i+1 < arguments.length; i = i + 2) {
+                    this.lineTo(arguments[i],arguments[i+1]);
+                }
+                this.closePath();
+                this.stroke();
+            }
+            graphics.fillOval = function(x,y,horizontalRadius,verticalRadius) {
+                this.save();
+                this.translate(x,y);
+                this.scale(horizontalRadius,verticalRadius);
+                this.beginPath();
+                this.arc(0,0,1,0,2*Math.PI,false);
+                this.restore();
+                this.fill();
+            }
+            graphics.strokeOval = function(x,y,horizontalRadius,verticalRadius) {
+                this.save();
+                this.translate(x,y);
+                this.scale(horizontalRadius,verticalRadius);
+                this.beginPath();
+                this.arc(0,0,1,0,2*Math.PI,false);
+                this.restore();
+                this.stroke();
+            }
+            graphics.getRGB = function(x,y) {
+                var color = this.getImageData(x,y,1,1);
+                return color.data;
+            }
+        }    // end of addGraphicsContextExtras()
+
+        function DrawNewNode(Node){ //draws a new node
+            //draws the white circle that represents a nodes
+            graphics.save();
+            graphics.fillStyle="white";
+            graphics.strokeStyle="black";
+            graphics.fillCircle(Node.GetX(),Node.GetY(),35);
+            graphics.strokeCircle(Node.GetX(),Node.GetY(),35);
+            graphics.restore();
+
+            //draws the node number inside the cirlce
+            graphics.save();
+            graphics.font = "15px Arial";
+            graphics.fillStyle = "black";
+            graphics.fillText(Node.GetNodeNum(), Node.GetX()-5, Node.GetY()+2.5);
+            graphics.restore();
+
+        }
+
+        function addNode(evt){
+            var r = canvas.getBoundingClientRect();
+            var posx = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+            var posy = Math.round(evt.clientY - r.top);
+            var num=0;
+
+            var Node_Num=1;
+            n++;//increments the index of the Node
+            num = getVal();//gets the number to be drawn inside a node
+
+            //Gives alert messsage if input value is not given.
+            if (num == ""){
+                alert("Please input node value.");
+                return;
+            }
+
+            //Gives alert message if input value has already been used.
+            for (let i = 0; i < Added_Nodes.length ; i ++){
+                if (Added_Nodes[i].GetNodeNum() == num){
+                    alert("Node value already used.");
+                    return;
+                }
+            }
+            var New_Node=new Node(posx,posy,num,n,false);//create new node
+            DrawNewNode(New_Node); //draw node on canvas
+            Added_Nodes.push(New_Node);
+            //increments node number
+            for (let i = 0; i < Added_Nodes.length ; i ++){
+                console.log(Added_Nodes[i].GetNodeNum() ,"-->" , Added_Nodes[i].GetArrIndex());
+            }
+        }
+
+
+        //Fix array indices after deletion
+        function FxIndDel(Del_Node_at){
+            for (let i=Del_Node_at;i<Added_Nodes.length;i++){ //starting from where we deleted till the end of the array
+                Added_Nodes[i].SetArrIndex(i);//pushing back the index by 1 since a deketion occured before it
+
+            }
+        }
+
+        function deleteNode(evt){
+            var Node_Selected= Check_Clicked(evt);
+            console.log(Added_Nodes.length);
+            Added_Nodes.splice(Node_Selected.GetArrIndex(),1);
+            FxIndDel(Node_Selected.GetArrIndex());
+            console.log(Added_Nodes.length);
+            graphics.save();
+            graphics.fillCircle(Node_Selected.GetX(),Node_Selected.GetY() ,37);
+            graphics.restore();
+
+            for (let i = 0; i < Added_Nodes.length ; i ++){
+                console.log(Added_Nodes[i].GetNodeNum() + "-->" + Added_Nodes[i].GetArrIndex());
+            }
+            n--;
+
+        }
+
+
+        function MoveNode(evt){
+
+            var r = canvas.getBoundingClientRect();
+            var newx = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+            var newy = Math.round(evt.clientY - r.top);
+
+            var Update_index=Node_ToMove.GetArrIndex();
+
+            console.log(Update_index,111);
+
+            graphics.save();
+            graphics.fillStyle = "White";
+            graphics.fillCircle(Added_Nodes[Update_index].GetX(),Added_Nodes[Update_index].GetY(), 37);
+            Added_Nodes[Update_index].SetX(newx);
+            Added_Nodes[Update_index].SetY(newy);
+            //console.log(Node_Selected.GetX(), Node_Selected.GetY());
+            graphics.restore();
+            //Draw new node and update Added_Nodes object
+            graphics.save();
+            DrawNewNode(Added_Nodes[Update_index]);
+            graphics.restore();
+
+
+        }
+
+        //This function checks whether a node has been clicked or not
+        function Check_Clicked(evt){ //current mouse position on canvas
+
+
+            if (IsSelected==false){
+                var r = canvas.getBoundingClientRect();
+                var currentx = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+                var currenty = Math.round(evt.clientY - r.top);
+                var x_coord;//centre of the circle
+                var y_coord;
+                var Node_Selected = new Node(300,300,-1);
+                var CircleRegions=new Array();
+                //var c =0;
+                var checkDist=0;
+                for (let i=0;i< Added_Nodes.length ;i++){
+                    x_coord=Added_Nodes[i].GetX();
+                    y_coord=Added_Nodes[i].GetY();
+                    checkDist=Math.sqrt(Math.pow((currentx-x_coord),2) + Math.pow((currenty-y_coord),2));
+                    if (checkDist<=35){
+                        //Checking if the clicked position is contained within or on a circle(Node)
+                        Node_Selected=Added_Nodes[i];
+                        IsSelected=true;
+                        Added_Nodes[i].SetIs_Selected(true);
+                        Node_ToMove=Added_Nodes[i];
+                        graphics.save();
+                        graphics.strokeStyle = "Blue";
+                        //graphics.fillCircle(Node_Selected.GetX(),Node_Selected.GetY(),35);
+                        graphics.strokeCircle(Node_Selected.GetX(),Node_Selected.GetY(),35);
+                        graphics.restore();
+                    }
+                }
+
+                return Node_Selected;
+
+            }
+            else {
+                IsSelected=false;
+                return Node_ToMove;
+            }
+
+
+        }
+
+        function OnCanvasClick(evt){
+            canvas.addEventListener("CanvasClick", OnCanvasClick, false);
+            var Node_Selected= Check_Clicked(evt);
+
+            console.log("Selected " + Node_Selected.GetNodeNum());
+            //console.log(x,y);
+
+        }
+
+
+        function getVal() { // gets the value from the input box
+            const val = document.getElementById("nodenum").value;
+            return val;
+        }
+
+        function paintComponent(whichSelection) { // gets the operation from the user
+            console.log(whichSelection);
+            switch(whichSelection){
+                case "0": // user chooses to add nodes
+                    addNodes = true;
+                    moveNodes = false;
+                    deleteNodes = false;
+                    connectNodes = false;
+                    break;
+                case "1": // user chooses to move nodes
+                    addNodes = false;
+                    moveNodes = true;
+                    deleteNodes = false;
+                    connectNodes = false;
+                    break;
+                case "2": // user chooses to delete nodes
+                    addNodes = false;
+                    moveNodes = false;
+                    deleteNodes = true;
+                    connectNodes = false;
+                    break;
+                case "3": // user chooses to connect nodes
+                    addNodes = false;
+                    moveNodes = false;
+                    deleteNodes = false;
+                    connectNodes = true;
+                    break;
+            }
+        }
+        function doNodeOperations(evt){
+            if (addNodes){
+                addNode(evt);
+                document.getElementById("nodenum").focus();
+            }
+
+            if (deleteNodes && (n!=0)){
+                //function to delete nodes
+                deleteNode(evt);
+            }
+
+            if (moveNodes){
+                //function to move node
+                // document.removeEventListener("CanvasClick", OnCanvasClick, false);
+                // document.getElementById("canvas").onclick= MoveNode(evt);
+                MoveNode(evt);
+                // document.getElementById("canvas").onclick=OnCanvasClick(evt);
+            }
+
+        }
+        /**
+         * The init() function is called after the page has been
+         * loaded.  It initializes the canvas and graphics variables,
+         * and it installs mouse and key listeners.  If an error
+         * occurs, a message is displayed in place of the canvas.
+         */
+        function init() {
+            try {
+                canvas = document.getElementById("canvas");
+                graphics = canvas.getContext("2d");
+            } catch(e) {
+                document.getElementById("canvasholder").innerHTML =
+                    "<p>Canvas graphics is not supported.<br>" +
+                    "An error occurred while initializing graphics.</p>";
+                return;
+            }
+            addGraphicsContextExtras(graphics);
+            installMouseHandler();
+            graphics.fillStyle = "white";
+            graphics.fillRect(0,0,canvas.width,canvas.height);
+
+            //document.getElementById("buttonAddNodeNumber").addEventListener("click",getVal);
+            document.getElementById("canvas").onclick= OnCanvasClick;
+            document.getElementById("canvas").addEventListener("dblclick", doNodeOperations); // double click on the canvas to add a node
+        }
+
+    </script>
+</head>
+<body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+
+<h2>Trees</h2>
+<noscript>
+    <!-- This message will be shown in the page if JavaScript is not available. -->
+    <p>JavaScript is required to use this page.</p>
+</noscript>
+
+<label for="nodenum">Add the Value of the Node</label>
+<input type="text" id="nodenum" name="nodenum">
+<!-- check box for determining whether user wants move a node-->
+<label for="StateChanges">Choose an operation: </label>
+<select name="StateChanges" onchange="paintComponent(this.value)">
+    <option value="">SELECT</option>
+    <option value="0">Add New Nodes</option>
+    <option value="1">Move Nodes</option>
+    <option value="2">Delete Nodes</option>
+    <option value="3">Connect Nodes</option>
+</select>
+<div id="canvasholder">
+    <canvas id="canvas" width="800" height="600">
+        <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
+        Canvas not supported.
+    </canvas>
+</div>
+
+</body>
+</html>
