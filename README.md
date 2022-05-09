@@ -1,4 +1,4 @@
-# 1204mb
+# 1024mb
 
 [![Build Status](https://travis-ci.org/Jaredrhd/Archotech.svg?branch=master)](https://travis-ci.org/Jaredrhd/Archotech)
 
