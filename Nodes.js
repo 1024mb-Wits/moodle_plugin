@@ -531,11 +531,69 @@ function addNode(posx, posy, num) {
 
 //Fix array indices after deletion
 function FxIndDel(Del_At) {
+    for (let i = Del_At; i < Added_Nodes.length; i++) { //starting from where we deleted till the end of the array
+        Added_Nodes[i].SetArrIndex(i);//pushing back the index by 1 since a deketion occured before it
+    }
+    return Added_Nodes;
 
 }
 
 function deleteNode(nodenum, nodeindx) {
     //var Node_Selected = Check_Clicked(evt);
+    
+    if (nodenum == Selected_Nodes[0] && Selected_Nodes[1] != -1) {
+        Selected_Nodes[0] = Selected_Nodes[1];
+        Selected_Nodes[1] = -1;
+    }
+    else if (nodenum == Selected_Nodes[0]) {
+        Selected_Nodes[0] = Selected_Nodes[1];
+    }
+
+    else if (nodenum == Selected_Nodes[1]) {
+        Selected_Nodes[1] = -1;
+    }
+    console.log("deleting node : " + nodenum );
+
+    count--;
+    console.log("Selected Nodes are", Selected_Nodes);
+    for (let i =0; i < Added_Nodes.length ; i ++){
+        if (Added_Nodes[i].GetLeftChild() == Node_Selected){
+            Added_Nodes[i].SetLeftChild(null);
+        }
+
+        if ( Added_Nodes[i].GetRightChild() == Node_Selected){
+            Added_Nodes[i].SetRightChild(null);
+        }
+
+    }
+
+
+    for (let i = 0; i < Added_Edges.length; i++) {
+        if (Added_Edges[i].GetNode_1() == nodenum || Added_Edges[i].GetNode_2() == nodenum) {
+            //we need to delete this edge
+            Added_Edges.splice(i, 1);
+            i--;
+            
+        }
+    }
+    const {x,y,Num_In_Node} = Added_Nodes[nodeindx] ;
+
+    Added_Nodes.splice(nodeindx, 1);
+    FxIndDel(nodeindx);
+    console.log(Added_Nodes.length);
+    
+    Added_Nodes.map( (Node) => {
+        const {x,y,Num_In_Node} = Node  ;
+        console.log({x,y,Num_In_Node});
+    })
+    
+    n--;
+
+    console.log("Edges are -->", Added_Edges);
+    //const {x,y,Num_In_Node} = Added_Nodes[n]   ;
+
+    return  {x,y,Num_In_Node};
+    //
 
 
 }
