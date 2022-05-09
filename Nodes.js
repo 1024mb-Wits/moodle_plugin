@@ -389,7 +389,89 @@ function Apply_Tree_Move(x_change, y_change, Root_Num) {
 
 
 function joinNodes(check) {
+    var pcheck = check;
 
+    console.log("selected nodes ", Selected_Nodes[0], " : ", Selected_Nodes[1]);
+
+    //first check if 2 nodes are selected
+    //then check if the nodes that are selected arent already connected
+    var New_Edge = new Edge(Selected_Nodes[0], Selected_Nodes[1]);
+    var flag1 = false;
+    var flag2 = true;
+    for (let i = 0; i < Added_Edges.length; i++) {
+        if ((New_Edge.GetNode_1() == Added_Edges[i].GetNode_1() && New_Edge.GetNode_2() == Added_Edges[i].GetNode_2())) {
+
+            console.log("cannot add edge. edges array-->", Added_Edges);
+            flag1 = true;
+        }
+        if ((New_Edge.GetNode_1() == Added_Edges[i].GetNode_2() && New_Edge.GetNode_2() == Added_Edges[i].GetNode_1())) {
+            console.log("cannot add edge. edges array-->", Added_Edges);
+            flag1 = true;
+        }
+    }
+
+    if (Selected_Nodes[0] != -1 && Selected_Nodes[1] != -1) {
+        flag2 = false;
+    }
+
+    //console.log(count, " ", flag);
+
+
+    if (flag2 == false && flag1 == false) {
+        for (let i = 0; i < Added_Nodes.length; i++) {
+            if (Added_Nodes[i].GetNodeNum() == Selected_Nodes[0]) {
+                var Node_1 = Added_Nodes[i];
+            }
+            if (Added_Nodes[i].GetNodeNum() == Selected_Nodes[1]) {
+                var Node_2 = Added_Nodes[i];
+            }
+
+        }
+
+
+        //since nodes are connected, they form part of the tree
+        if (Node_1.GetY() < Node_2.GetY()) { // determine which is parent node based on position
+            pcheck = 1;
+        }
+        else {
+            pcheck = 2;
+        }
+
+        if (pcheck == 1) {//the first node is the parent now determine whether the second is a left child or right
+            if (Node_1.GetX() < Node_2.GetX()) {//0 is false, 1 is true
+                var treeNode1 = new Tree_Node(0, 1, Node_1.GetNodeNum(), 0, Node_1.GetNodeNum(), 0, 0);
+                Node_1.SetRightChild(Node_2);
+            }
+
+            else {// its a right child
+                Node_1.SetLeftChild(Node_2);
+            }
+
+
+        }
+        else { // the second node is the parent
+
+            if (Node_2.GetX() < Node_1.GetX()) {
+                Node_2.SetRightChild(Node_1);
+
+            }
+            else {
+
+                Node_2.SetLeftChild(Node_1);
+            }
+
+
+        }
+
+        //Add new edge to edge array
+
+        Added_Edges.push(New_Edge);
+        console.log("Added edge ", Added_Edges);
+        return ("Nodes are connected");
+    }
+    else {
+        return ("Choose another node to connect / Nodes are already Connected");
+    }
 
 }
 
@@ -426,7 +508,7 @@ function addNode(posx, posy, num) {
     Added_Nodes.push(New_Node);// DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
     //increments node number
 
-    // console.log(Added_Nodes[n]);      
+    // console.log(Added_Nodes[n]);
     /*
                 Added_Nodes.map( (Node) => {
                     const {x,y,Num_In_Node} = Node  ;
@@ -479,6 +561,93 @@ function DrawAllNodes() {
 
 //This function checks whether a node has been clicked or not
 function Check_Clicked(currentx, currenty) { //current mouse position on canvas
+
+    Node_Selected = new Node(605, 605, -1, 0);
+    if (IsSelected == false) {
+        var x_coord;//centre of the circle
+        var y_coord;
+        var Node_Selected = new Node(300, 300, -1);
+        var Node_dummy = new Node(-1, -1, -1, -1);
+        //var CircleRegions = new Array();
+        //var c =0;
+        var checkDist = 0;
+        for (let i = 0; i < Added_Nodes.length; i++) {
+            x_coord = Added_Nodes[i].GetX();
+            y_coord = Added_Nodes[i].GetY();
+            checkDist = Math.sqrt(Math.pow((currentx - x_coord), 2) + Math.pow((currenty - y_coord), 2));
+
+            //Checking if the clicked position is contained within or on a circle(Node)
+            if (checkDist <= 35) {//user clicked Node
+                Node_Selected = Added_Nodes[i];//Get the selected node
+                //console.log( Added_Nodes[i].GetIs_Selected());
+                if (Added_Edges.length > 0) {
+                    subtree = new Array();
+                    console.log(PreOrderTraversal(Node_Selected));
+                    PrintSubTree();
+                }
+                //Check if node has already been selected
+                if (Added_Nodes[i].GetIs_Selected() !== true) {
+                    //If Node is not selected
+                    //Draw blue outline around node indicating that it is selected
+                    Added_Nodes[i].SetIs_Selected(true);
+                    console.log(Added_Nodes[i].GetNodeNum(), " ", "Node is being selected");
+
+                    if (Selected_Nodes[0] == -1) { //first index is empty so we add to the first element
+                        Selected_Nodes[0] = Added_Nodes[i].GetNodeNum();
+                        count++;
+
+                    }
+                    else if (Selected_Nodes[1] == -1) { //this means first element is taken
+                        Selected_Nodes[1] = Added_Nodes[i].GetNodeNum();
+                        count++;
+                    }
+                    else if (Selected_Nodes[1] !== Added_Nodes[i].GetNodeNum() && count == 2) {
+                        // selects a third node, so deselect the second node
+
+                        for (let j = 0; j < Added_Nodes.length; j++) {
+                            if (Added_Nodes[j].GetNodeNum() == Selected_Nodes[0]) {
+                                var Nodeindex = j;
+                            }
+
+
+                        }
+                        Added_Nodes[Nodeindex].SetIs_Selected(false);
+                        Selected_Nodes[0] = Selected_Nodes[1];
+                        Selected_Nodes[1] = Added_Nodes[i].GetNodeNum();
+                    }
+                    console.log("number of nodes selected is: ", count);
+                    console.log("Nodes selected are: ", Selected_Nodes);
+
+                }
+
+                else {
+                    //we need to remove blue outline to indicate that the node is being deselected
+                    console.log(Added_Nodes[i].GetNodeNum(), "Deselected node");
+                    Added_Nodes[i].SetIs_Selected(false);
+                    if (Selected_Nodes[0] == Added_Nodes[i].GetNodeNum()) { //first index is empty so we add to the first element
+                        Selected_Nodes[0] = -1;
+                        count--;
+                    }
+                    else if (Selected_Nodes[1] == Added_Nodes[i].GetNodeNum()) { //this means first element is taken
+                        Selected_Nodes[1] = -1;
+                        count--;
+                    }
+                    //DrawNewNode(Node_Selected, "black");
+                    console.log("number of nodes selected is: ", count);
+                    console.log("nodes selected is: ", Selected_Nodes);
+                }
+
+            }
+        }
+
+        return Node_Selected;
+
+    }
+    else {
+        IsSelected = false;
+        return Node_dummy;
+    }
+
 
 }
 
