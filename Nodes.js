@@ -418,7 +418,28 @@ function addNode(posx, posy, num) {
     //var r = canvas.getBoundingClientRect();
 
     //var num = 0;
+    var Node_Num = 1;
+    n++;//increments the index of the Node
 
+    var New_Node = new Node(posx, posy, num, n);//create new node
+    //DrawNewNode(New_Node, "black"); //draw node on canvas
+    Added_Nodes.push(New_Node);// DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
+    //increments node number
+
+    // console.log(Added_Nodes[n]);      
+    /*
+                Added_Nodes.map( (Node) => {
+                    const {x,y,Num_In_Node} = Node  ;
+                    console.log({x,y,Num_In_Node});
+                })
+    */
+    const { x, y, Num_In_Node } = Added_Nodes[n];
+    console.log("Selected Nodes are", Selected_Nodes);
+    //console.log(Added_Nodes);
+
+
+
+    return { x, y, Num_In_Node };
 
 
 }
@@ -462,6 +483,46 @@ function Check_Clicked(currentx, currenty) { //current mouse position on canvas
 }
 
 function editNode(num, nodenum, nodeindx) {
+    for (let i = 0; i < Added_Edges.length; i++) { // change the node number across edges array
+        if (Added_Edges[i].GetNode_1() == nodenum) {
+            Added_Edges[i].SetNode_1(num);
+        }
+        if (Added_Edges[i].GetNode_2() == nodenum) {
+            Added_Edges[i].SetNode_2(num);
+        }
+    }
+
+    if (Selected_Nodes[0] == nodenum) {
+        Selected_Nodes[0] = num;
+    }
+    else {
+        Selected_Nodes[1] = num;
+    }
+
+    Added_Nodes[nodeindx].SetNodeNum(num);
+
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetLeftChild() != null || Added_Nodes[i].GetRightChild() != null) {
+            if (Added_Nodes[i].GetLeftChild().GetNodeNum() == nodenum) {
+                Added_Nodes[i].GetLeftChild().SetNodeNum(num);
+            }
+
+            if (Added_Nodes[i].GetRightChild().GetNodeNum() == nodenum) {
+                Added_Nodes[i].GetRightChild().SetNodeNum(num);
+            }
+        }
+
+    }
+
+
+
+
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        console.log(Added_Nodes[i].GetNodeNum(), "-->", Added_Nodes[i].GetArrIndex());
+    }
+    console.log("Edges are -->", Added_Edges);
+
+    return (num);
 
 
 }
