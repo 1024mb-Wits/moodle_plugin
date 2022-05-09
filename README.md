@@ -1,10 +1,32 @@
-# A Moodle plugin for Automated Assessment in Data Structures
-This project will focus on the development of new question types for Moodle quizzes. The
-questions will allow students to write tests about Binary Search Trees, Binary Heaps, AVL
-Trees and Sorting. The plugin will support the automatic generation of questions and will
-be able to randomly generate questions within a specific format so that students writing tests
-can be given their own version of the relevant questions. The plugin will include a widget allowing students and lecturers to construct and edit trees.
+# Archotech
+
+[![Build Status](https://travis-ci.org/Jaredrhd/Archotech.svg?branch=master)](https://travis-ci.org/Jaredrhd/Archotech)
+
+[![Coverage Status](https://coveralls.io/repos/github/Jaredrhd/Archotech/badge.svg)](https://coveralls.io/github/Jaredrhd/Archotech)
 
 
-[![1024mb-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget.svg?style=shield)](https://app.circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget)
-[![codecov](https://codecov.io/gh/1024mb-Wits/moodle_plugin/branch/main/graph/badge.svg?token=1f3a8833-b4c9-4af6-9302-9d80ba8ac397)](https://codecov.io/gh/1024mb-Wits/moodle_plugin)
+Trees
+----------------------
+
+The Tree plugin is a plugin that allows users to create Trees by placing, editing and deleting nodes.
+
+Features
+---------------------
+
+* A lecturer should be able to assign an output to a question (ie the answer for the question)
+* A lecturer and student should be able to build a tree by adding nodes.
+* A lecturer and student should be able to edit the value of a node.
+* A lecturer and student should be able to drag a node to another place.
+* A lecturer and student should be able to delete a node and its children.
+* A lecturer should be able to choose what type of question to ask.
+* A student should be able to select nodes in the tree to build up a traversal string if the question type is a traversal question
+* A lecturer should be able to input BST values for a BST question for the student.
+* A lecturer or student should be able to randomly generate values for a node, or specifically put in their own value.
+
+###Installation
+
+Download the zip from :
+
+* latest (master branch) - https://github.com/Jaredrhd/Archotech
+
+unzip it into the question/type folder, and then rename the new folder to trees if not already that.

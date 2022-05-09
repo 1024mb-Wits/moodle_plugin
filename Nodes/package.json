@@ -1,0 +1,18 @@
+{
+  "name": "avl_widget",
+  "version": "1.0.0",
+  "description": "widget for constructing trees",
+  "main": "Nodes.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "testing",
+    "widget"
+  ],
+  "author": "dharmik",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^28.0.3"
+  }
+}
