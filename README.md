@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
 
+[![1024-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin.svg?style=shield&circle-token=bcc0c991b58c4207ef061a9a5ee69ce3fdfa36bb)](https://app.circleci.com/pipelines/github/1024mb-Wits/moodle_plugin)
+
 [![Coverage Status](https://coveralls.io/repos/github/Jaredrhd/Archotech/badge.svg)](https://coveralls.io/github/Jaredrhd/Archotech)
 
 
