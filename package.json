@@ -4,7 +4,11 @@
   "description": "widget for constructing trees",
   "main": "Nodes.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "keywords": [
     "testing",
