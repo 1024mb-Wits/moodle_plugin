@@ -304,29 +304,9 @@ function addGraphicsContextExtras(graphics) {
         this.arc(x, y, radius, 0, 2 * Math.PI, false);
         this.stroke();
     }
-    graphics.fillPoly = function() {
-        if (arguments.length < 6)
-            return;
-        this.beginPath();
-        this.moveTo(arguments[0], arguments[1]);
-        for (var i = 2; i + 1 < arguments.length; i = i + 2) {
-            this.lineTo(arguments[i], arguments[i + 1]);
-        }
-        this.closePath();
-        this.fill();
-    }
-    graphics.getRGB = function(x, y) {
-        var color = this.getImageData(x, y, 1, 1);
-        return color.data;
-    }
 } // end of addGraphicsContextExtras()
 
 function DrawNewNode(Node, color) { //draws a new node
-    //draws the white circle that represents a nodes
-    var Delx;
-    var Dely;
-    var Editx;
-    var Edity;
 
     graphics.save();
     graphics.fillStyle = "white";
