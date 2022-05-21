@@ -78,6 +78,11 @@ class Node {
         return this.RC;
     }
 
+
+
+
+
+
 }
 class Edge {
 
@@ -130,6 +135,8 @@ Added_Nodes = new Array();
 var Added_Edges = new Array();
 var subtree = new Array();
 var dummyNode = new Node(820, 620, -1, n);
+var previous_x = -1; //x coordinate of node that was selected previously
+var previous_y = -1; //y coordinate
 var IsSelected = false;
 var Node_ToMove;
 const Selected_Nodes = [-1, -1]; //tuple containing the nodes currently selected ,can have just one node selected or both
@@ -137,6 +144,13 @@ Added_Nodes.push(dummyNode);
 //addNode(820,620,-1)
 
 var Node_Selected;
+
+var drag_node;
+var count = 0;
+
+var rootexists = false;
+var numroots = 0;
+
 var x, y;
 
 
@@ -181,6 +195,13 @@ function installMouseHandler() {
         graphics.clearRect(0, 0, canvas.width, canvas.height);
         DrawAllEdges();
         DrawAllNodes();
+
+
+
+        //drag_node = Node_Selected;
+        //console.log("x" + Node_Selected.GetNodeNum())
+
+
         console.log("clicked on " + Node_Selected.GetNodeNum())
 
         if (Node_Selected.GetNodeNum() != -1 && Node_Selected.GetIs_Selected()) {
@@ -189,6 +210,8 @@ function installMouseHandler() {
         } else {
             closePopup();
         }
+
+
         // round to integer values; some browsers would give non-integers.
         // (this won't be the case for all mousedowns in all programs)
         if (dragging) {
@@ -199,6 +222,9 @@ function installMouseHandler() {
             document.addEventListener("mousemove", doMouseMove, false);
             document.addEventListener("mouseup", doMouseUp, false);
         }
+
+        //colorChoice = Number(document.getElementById("colorChoice").value);
+        // TODO: Anything else to do when mouse is first pressed?
     }
 
     function doMouseMove(evt) {
@@ -278,10 +304,59 @@ function addGraphicsContextExtras(graphics) {
         this.arc(x, y, radius, 0, 2 * Math.PI, false);
         this.stroke();
     }
+    graphics.fillPoly = function() {
+        if (arguments.length < 6)
+            return;
+        this.beginPath();
+        this.moveTo(arguments[0], arguments[1]);
+        for (var i = 2; i + 1 < arguments.length; i = i + 2) {
+            this.lineTo(arguments[i], arguments[i + 1]);
+        }
+        this.closePath();
+        this.fill();
+    }
+    graphics.strokePoly = function() {
+        if (arguments.length < 4)
+            return;
+        this.beginPath();
+        this.moveTo(arguments[0], arguments[1]);
+        for (var i = 2; i + 1 < arguments.length; i = i + 2) {
+            this.lineTo(arguments[i], arguments[i + 1]);
+        }
+        this.closePath();
+        this.stroke();
+    }
+    graphics.fillOval = function(x, y, horizontalRadius, verticalRadius) {
+        this.save();
+        this.translate(x, y);
+        this.scale(horizontalRadius, verticalRadius);
+        this.beginPath();
+        this.arc(0, 0, 1, 0, 2 * Math.PI, false);
+        this.restore();
+        this.fill();
+    }
+    graphics.strokeOval = function(x, y, horizontalRadius, verticalRadius) {
+        this.save();
+        this.translate(x, y);
+        this.scale(horizontalRadius, verticalRadius);
+        this.beginPath();
+        this.arc(0, 0, 1, 0, 2 * Math.PI, false);
+        this.restore();
+        this.stroke();
+    }
+    graphics.getRGB = function(x, y) {
+        var color = this.getImageData(x, y, 1, 1);
+        return color.data;
+    }
 } // end of addGraphicsContextExtras()
 
 function DrawNewNode(Node, color) { //draws a new node
     //draws the white circle that represents a nodes
+    var Delx;
+    var Dely;
+    var Editx;
+    var Edity;
+
     graphics.save();
     graphics.fillStyle = "white";
     graphics.strokeStyle = color;
@@ -298,6 +373,19 @@ function DrawNewNode(Node, color) { //draws a new node
 
 }
 
+
+function Move_Other_Nodes() { //gets root node from canvas
+    var highest = 1000000;
+    var highest_node;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetY() < highest && Added_Nodes[i].GetNodeNum() !== -1) {
+            highest_node = Added_Nodes[i];
+            highest = Added_Nodes[i].GetY();
+        }
+    }
+    return highest_node.GetLeftChild();
+}
+
 function Apply_Tree_Move(x_change, y_change, Root_Num) {
 
     for (let j = 1; j < subtree.length; j++) {
@@ -312,6 +400,18 @@ function Apply_Tree_Move(x_change, y_change, Root_Num) {
         }
     }
 }
+
+
+function Check_NodeNum_Exists(num) {
+    var unique_num = true;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetNodeNum() == num) {
+            unique_num = false;
+        }
+    }
+    return unique_num;
+}
+
 
 
 function joinNodes(check) {
@@ -451,15 +551,33 @@ function DrawAllEdges() {
 
 
 function addNode(posx, posy, num) {
+    //var r = canvas.getBoundingClientRect();
+
+    //var num = 0;
     var Node_Num = 1;
     n++; //increments the index of the Node
 
     var New_Node = new Node(posx, posy, num, n); //create new node
     //DrawNewNode(New_Node, "black"); //draw node on canvas
     Added_Nodes.push(New_Node); // DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
+    //increments node number
+
+    // console.log(Added_Nodes[n]);
+    /*
+                Added_Nodes.map( (Node) => {
+                    const {x,y,Num_In_Node} = Node  ;
+                    console.log({x,y,Num_In_Node});
+                })
+    */
     const { x, y, Num_In_Node } = Added_Nodes[n];
     console.log("Selected Nodes are", Selected_Nodes);
+    //console.log(Added_Nodes);
+
+
+
     return { x, y, Num_In_Node };
+
+
 }
 
 
@@ -665,7 +783,16 @@ function editNode(num, nodenum, nodeindx) {
 
     }
 
+
+
+
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        console.log(Added_Nodes[i].GetNodeNum(), "-->", Added_Nodes[i].GetArrIndex());
+    }
+    console.log("Edges are -->", Added_Edges);
+
     return (num);
+
 
 }
 
@@ -687,14 +814,37 @@ function paintComponent(whichSelection) { // gets the operation from the user
             deleteNodes = false;
             connectNodes = false;
             break;
+        case "1": // user chooses to move nodes
+            addNodes = false;
+            moveNodes = true;
+            deleteNodes = false;
+            connectNodes = false;
+            break;
         case "2": // user chooses to delete nodes
             addNodes = false;
             moveNodes = false;
             deleteNodes = true;
             connectNodes = false;
             break;
+        case "3": // user chooses to connect nodes
+            addNodes = false;
+            moveNodes = false;
+            deleteNodes = false;
+            connectNodes = true;
+            break;
     }
 }
+
+function SearchNodes(num) {
+    let found = false;
+    for (let i = 0; i < Added_Nodes.length; i++) {
+        if (Added_Nodes[i].GetNodeNum() == num) {
+            found = true;
+        }
+    }
+    return found;
+}
+
 
 function doNodeOperations(evt) {
     if (addNodes) {
@@ -743,6 +893,10 @@ function init() {
     installMouseHandler();
     graphics.fillStyle = "white";
     graphics.fillRect(0, 0, canvas.width, canvas.height);
+
+    //document.getElementById("buttonAddNodeNumber").addEventListener("click",getVal);
+
+    //document.getElementById("canvas").onclick = OnCanvasClick;
     document.getElementById("canvas").addEventListener("dblclick", doNodeOperations);
     document.getElementById("canvas").addEventListener("contextmenu", doNodeOperations); // double click on the canvas to add a node
 }
