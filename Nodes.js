@@ -127,7 +127,6 @@ class Tree_Node { //used for representing a node in the tree as a string
 
 var canvas; // The canvas element on which we== will draw.
 var graphics; // A 2D graphics context for drawing on the canvas.
-var startX, startY;
 var addNodes, deleteNodes,moveNodes = false; // a boolean variable that determines whether the user wants to move the nodes or not
 let n = 0; //Node number
 var Added_Nodes; //stores all of the nodes that has been added to the canvas
@@ -200,11 +199,6 @@ function installMouseHandler() {
         var r = canvas.getBoundingClientRect();
         x = Math.round(evt.clientX - r.left);
         y = Math.round(evt.clientY - r.top);
-
-        /*------------------------------------------------------------*/
-        /* TODO: Add support for more drawing tools. */
-
-        //var Node_Selected = Check_Clicked(evt);
         if (Node_Selected.GetNodeNum() == -1) {
             return;
         } else {
