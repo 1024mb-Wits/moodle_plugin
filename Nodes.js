@@ -112,6 +112,19 @@ class Edge {
 
 
 }
+
+class Tree_Node { //used for representing a node in the tree as a string
+    constructor(Root, Is_Parent, Node_val, Parent_Node, LC, RC) {
+        this.Root = Root
+        this.Is_Parent = Is_Parent;
+        this.Node_val = Node_val;
+        this.LC = LC;
+        this.RC = RC;
+        this.Parent_Node = Parent_Node;
+    }
+}
+
+
 var canvas; // The canvas element on which we== will draw.
 var graphics; // A 2D graphics context for drawing on the canvas.
 var startX, startY;
