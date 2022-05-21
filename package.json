@@ -1,26 +1,18 @@
 {
-    "jest": {
-        "coverageDirectory": "./coverage/",
-        "collectCoverage": true
-    },
-    "scripts": {
-        "test": "jest --coverage"
-    },
-    "name": "avl_widget",
-    "version": "1.0.0",
-    "description": "widget for constructing trees",
-    "main": "Nodes.js",
-    "keywords": [
-        "testing",
-        "widget"
-    ],
-    "author": "dharmik",
-    "license": "MIT",
-    "devDependencies": {
-        "coveralls": "^3.1.1",
-        "jest": "^28.1.0"
-    },
-    "dependencies": {
-        "nodejs": "^0.0.0"
-    }
+  "name": "avl_widget",
+  "version": "1.0.0",
+  "description": "widget for constructing trees",
+  "main": "Nodes.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "testing",
+    "widget"
+  ],
+  "author": "dharmik",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^28.0.3"
+  }
 }
