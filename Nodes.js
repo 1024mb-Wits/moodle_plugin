@@ -77,6 +77,12 @@ class Node {
     GetRightChild() {
         return this.RC;
     }
+
+
+
+
+
+
 }
 class Edge {
 
@@ -129,11 +135,21 @@ Added_Nodes = new Array();
 var Added_Edges = new Array();
 var subtree = new Array();
 var dummyNode = new Node(820, 620, -1, n);
+var previous_x = -1; //x coordinate of node that was selected previously
+var previous_y = -1; //y coordinate
 var IsSelected = false;
 var Node_ToMove;
 const Selected_Nodes = [-1, -1]; //tuple containing the nodes currently selected ,can have just one node selected or both
 Added_Nodes.push(dummyNode);
+//addNode(820,620,-1)
+
 var Node_Selected;
+
+var drag_node;
+var count = 0;
+
+var rootexists = false;
+var numroots = 0;
 
 var x, y;
 
@@ -150,6 +166,11 @@ function installMouseHandler() {
     var dragging = false; // set to true when a drag action is in progress.
     // coordinates of mouse at start of drag.
     var prevX, prevY; // previous mouse position during a drag.
+
+    var colorChoice; // Integer code for the selected color in the "colorChoide"
+    // popup menu.  The value is assigned in doMouseDown.
+
+
     function doMouseDown(evt) {
         // This function is called when the user presses a button on the mouse.
         // Only the main mouse button will start a drag.
@@ -283,6 +304,21 @@ function addGraphicsContextExtras(graphics) {
         this.arc(x, y, radius, 0, 2 * Math.PI, false);
         this.stroke();
     }
+    graphics.fillPoly = function() {
+        if (arguments.length < 6)
+            return;
+        this.beginPath();
+        this.moveTo(arguments[0], arguments[1]);
+        for (var i = 2; i + 1 < arguments.length; i = i + 2) {
+            this.lineTo(arguments[i], arguments[i + 1]);
+        }
+        this.closePath();
+        this.fill();
+    }
+    graphics.getRGB = function(x, y) {
+        var color = this.getImageData(x, y, 1, 1);
+        return color.data;
+    }
 } // end of addGraphicsContextExtras()
 
 function DrawNewNode(Node, color) { //draws a new node
@@ -308,7 +344,6 @@ function DrawNewNode(Node, color) { //draws a new node
 
 }
 
-
 function Apply_Tree_Move(x_change, y_change, Root_Num) {
 
     for (let j = 1; j < subtree.length; j++) {
@@ -323,6 +358,7 @@ function Apply_Tree_Move(x_change, y_change, Root_Num) {
         }
     }
 }
+
 
 function joinNodes(check) {
     var pcheck = check;
@@ -458,15 +494,17 @@ function DrawAllEdges() {
     }
 }
 
+
+
 function addNode(posx, posy, num) {
     var Node_Num = 1;
     n++; //increments the index of the Node
+
     var New_Node = new Node(posx, posy, num, n); //create new node
     //DrawNewNode(New_Node, "black"); //draw node on canvas
     Added_Nodes.push(New_Node); // DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
     const { x, y, Num_In_Node } = Added_Nodes[n];
     console.log("Selected Nodes are", Selected_Nodes);
-    //console.log(Added_Nodes);
     return { x, y, Num_In_Node };
 }
 
