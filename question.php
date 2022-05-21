@@ -103,7 +103,16 @@ class qtype_trees_question extends question_graded_automatically_with_countback 
         return 0;
     }
 
-   
+    public function grade_traversal(array $response) {
+        $result = 0;
+        $answer = $response["answer"];
+
+        $traversalType = $this->preorder != "" ? $this->preorder : ($this->inorder != "" ? $this->inorder : $this->postorder);
+
+        if($answer == $traversalType) $result = 1;
+
+        return $result;
+    }
 
     public function grade_bst(array $response) {
         $result = 0;
