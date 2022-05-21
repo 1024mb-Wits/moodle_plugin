@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html>
-<!--
-   This web page does the minimal setup for using mouse events along
-   with 2D canvas graphics.
--->
-
 <head>
     <meta charset="UTF-8">
     <title>Trees</title>
     <link rel="StyleSheet" href="styles.css">
     <style>
-        /* This style section is here to make the canvas more obvious on the
-       page.  It is white on a light gray page background, with a thin
-       black border.  Also, turn off text selection to avoid having
-       selection interfere with mouse action. */
         body {
             background-color: #28aee8;
             -webkit-user-select: none;
@@ -40,16 +31,10 @@
             /* This makes the border exactly fit the canvas. */
         }
     </style>
-    
+
     <script src="Nodes.js">
 
         "use strict";  // gives improved error-checking in scripts.
-        /**
-         * This function returns a string representing a random RGB color.
-         * The returned string can be assigned as the value of graphics.fillStyle
-         * or graphics.strokeStyle.
-         */
-
     </script>
 </head>
 
@@ -69,9 +54,7 @@
     <select name="StateChanges" onchange="paintComponent(this.value)">
         <option value="">SELECT</option>
         <option value="0">Add New Nodes</option>
-        <option value="1">Move Nodes</option>
         <option value="2">Delete Nodes</option>
-        <option value="3">Connect Nodes</option>
     </select>
 
 
@@ -113,11 +96,11 @@
             var oldnum  = Node_Selected.GetNodeNum();
             var idxnum = Node_Selected.GetArrIndex();
             editNode(num,oldnum,idxnum);
-            
+
             DrawAllEdges();
             DrawAllNodes();
 
-        
+
 
             //e.preventDefault();
 
