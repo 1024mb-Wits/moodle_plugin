@@ -1,5 +1,5 @@
 # 1024mb
-
+[![1024-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget.svg?style=shield&circle-token=bcc0c991b58c4207ef061a9a5ee69ce3fdfa36bb)](https://app.circleci.com/pipelines/gh/1024mb-Wits/moodle_plugin?branch=AVL_widget)
 
 
 [![Coverage Status](https://coveralls.io/repos/github/1024mb-Wits/moodle_plugin/badge.svg?branch=AVL_widget)](https://coveralls.io/github/1024mb-Wits/moodle_plugin?branch=AVL_widget)
