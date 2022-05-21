@@ -112,23 +112,10 @@ class Edge {
 
 
 }
-
-class Tree_Node { //used for representing a node in the tree as a string
-    constructor(Root, Is_Parent, Node_val, Parent_Node, LC, RC) {
-        this.Root = Root
-        this.Is_Parent = Is_Parent;
-        this.Node_val = Node_val;
-        this.LC = LC;
-        this.RC = RC;
-        this.Parent_Node = Parent_Node;
-    }
-}
-
-
 var canvas; // The canvas element on which we== will draw.
 var graphics; // A 2D graphics context for drawing on the canvas.
 var startX, startY;
-var addNodes, deleteNodes, connectNodes, moveNodes = false; // a boolean variable that determines whether the user wants to move the nodes or not
+var addNodes, deleteNodes,moveNodes = false; // a boolean variable that determines whether the user wants to move the nodes or not
 let n = 0; //Node number
 var Added_Nodes; //stores all of the nodes that has been added to the canvas
 Added_Nodes = new Array();
@@ -146,20 +133,10 @@ var x, y;
 function sum(a, b) {
     return a + b;
 }
-//module.exports = sum;
-
-
-
 function installMouseHandler() {
 
     var dragging = false; // set to true when a drag action is in progress.
     // coordinates of mouse at start of drag.
-    var prevX, prevY; // previous mouse position during a drag.
-
-    var colorChoice; // Integer code for the selected color in the "colorChoide"
-    // popup menu.  The value is assigned in doMouseDown.
-
-
     function doMouseDown(evt) {
         // This function is called when the user presses a button on the mouse.
         // Only the main mouse button will start a drag.
@@ -416,14 +393,6 @@ function PrintSubTree() {
     return nodenums;
 
 }
-
-function printTree(a) {
-    var b = a;
-
-    PreOrderTraversal(Node_Selected);
-    return PrintSubTree();
-}
-
 function DrawAllEdges() {
     for (let i = 0; i < Added_Edges.length; i++) {
         var Val_1 = Added_Edges[i].GetNode_1();
@@ -447,9 +416,7 @@ function DrawAllEdges() {
 
 
 function addNode(posx, posy, num) {
-    var Node_Num = 1;
     n++; //increments the index of the Node
-
     var New_Node = new Node(posx, posy, num, n); //create new node
     //DrawNewNode(New_Node, "black"); //draw node on canvas
     Added_Nodes.push(New_Node); // DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
@@ -519,11 +486,7 @@ function deleteNode(nodenum, nodeindx) {
     n--;
 
     console.log("Edges are -->", Added_Edges);
-    //const {x,y,Num_In_Node} = Added_Nodes[n]   ;
-
     return { x, y, Num_In_Node };
-    //
-
 
 }
 
@@ -553,8 +516,6 @@ function Check_Clicked(currentx, currenty) { //current mouse position on canvas
         var y_coord;
         var Node_Selected = new Node(300, 300, -1);
         var Node_dummy = new Node(-1, -1, -1, -1);
-        //var CircleRegions = new Array();
-        //var c =0;
         var checkDist = 0;
         for (let i = 0; i < Added_Nodes.length; i++) {
             x_coord = Added_Nodes[i].GetX();
@@ -664,16 +625,11 @@ function editNode(num, nodenum, nodeindx) {
 
 
 }
-
 module.exports = { sum, addNode, deleteNode, Check_Clicked, joinNodes, PrintSubTree, editNode };
-
-
-
 function getVal() { // gets the value from the input box
     const val = document.getElementById("nodenum").value;
     return val;
 }
-
 function paintComponent(whichSelection) { // gets the operation from the user
     console.log(whichSelection);
     switch (whichSelection) {
