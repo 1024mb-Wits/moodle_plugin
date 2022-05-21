@@ -315,35 +315,6 @@ function addGraphicsContextExtras(graphics) {
         this.closePath();
         this.fill();
     }
-    graphics.strokePoly = function() {
-        if (arguments.length < 4)
-            return;
-        this.beginPath();
-        this.moveTo(arguments[0], arguments[1]);
-        for (var i = 2; i + 1 < arguments.length; i = i + 2) {
-            this.lineTo(arguments[i], arguments[i + 1]);
-        }
-        this.closePath();
-        this.stroke();
-    }
-    graphics.fillOval = function(x, y, horizontalRadius, verticalRadius) {
-        this.save();
-        this.translate(x, y);
-        this.scale(horizontalRadius, verticalRadius);
-        this.beginPath();
-        this.arc(0, 0, 1, 0, 2 * Math.PI, false);
-        this.restore();
-        this.fill();
-    }
-    graphics.strokeOval = function(x, y, horizontalRadius, verticalRadius) {
-        this.save();
-        this.translate(x, y);
-        this.scale(horizontalRadius, verticalRadius);
-        this.beginPath();
-        this.arc(0, 0, 1, 0, 2 * Math.PI, false);
-        this.restore();
-        this.stroke();
-    }
     graphics.getRGB = function(x, y) {
         var color = this.getImageData(x, y, 1, 1);
         return color.data;
@@ -373,19 +344,6 @@ function DrawNewNode(Node, color) { //draws a new node
 
 }
 
-
-function Move_Other_Nodes() { //gets root node from canvas
-    var highest = 1000000;
-    var highest_node;
-    for (let i = 0; i < Added_Nodes.length; i++) {
-        if (Added_Nodes[i].GetY() < highest && Added_Nodes[i].GetNodeNum() !== -1) {
-            highest_node = Added_Nodes[i];
-            highest = Added_Nodes[i].GetY();
-        }
-    }
-    return highest_node.GetLeftChild();
-}
-
 function Apply_Tree_Move(x_change, y_change, Root_Num) {
 
     for (let j = 1; j < subtree.length; j++) {
@@ -400,18 +358,6 @@ function Apply_Tree_Move(x_change, y_change, Root_Num) {
         }
     }
 }
-
-
-function Check_NodeNum_Exists(num) {
-    var unique_num = true;
-    for (let i = 0; i < Added_Nodes.length; i++) {
-        if (Added_Nodes[i].GetNodeNum() == num) {
-            unique_num = false;
-        }
-    }
-    return unique_num;
-}
-
 
 
 function joinNodes(check) {
@@ -551,33 +497,15 @@ function DrawAllEdges() {
 
 
 function addNode(posx, posy, num) {
-    //var r = canvas.getBoundingClientRect();
-
-    //var num = 0;
     var Node_Num = 1;
     n++; //increments the index of the Node
 
     var New_Node = new Node(posx, posy, num, n); //create new node
     //DrawNewNode(New_Node, "black"); //draw node on canvas
     Added_Nodes.push(New_Node); // DO NOT CALL ANY GRAPHIC FUNCTIONS IN THE TESTS
-    //increments node number
-
-    // console.log(Added_Nodes[n]);
-    /*
-                Added_Nodes.map( (Node) => {
-                    const {x,y,Num_In_Node} = Node  ;
-                    console.log({x,y,Num_In_Node});
-                })
-    */
     const { x, y, Num_In_Node } = Added_Nodes[n];
     console.log("Selected Nodes are", Selected_Nodes);
-    //console.log(Added_Nodes);
-
-
-
     return { x, y, Num_In_Node };
-
-
 }
 
 
@@ -814,37 +742,14 @@ function paintComponent(whichSelection) { // gets the operation from the user
             deleteNodes = false;
             connectNodes = false;
             break;
-        case "1": // user chooses to move nodes
-            addNodes = false;
-            moveNodes = true;
-            deleteNodes = false;
-            connectNodes = false;
-            break;
         case "2": // user chooses to delete nodes
             addNodes = false;
             moveNodes = false;
             deleteNodes = true;
             connectNodes = false;
             break;
-        case "3": // user chooses to connect nodes
-            addNodes = false;
-            moveNodes = false;
-            deleteNodes = false;
-            connectNodes = true;
-            break;
     }
 }
-
-function SearchNodes(num) {
-    let found = false;
-    for (let i = 0; i < Added_Nodes.length; i++) {
-        if (Added_Nodes[i].GetNodeNum() == num) {
-            found = true;
-        }
-    }
-    return found;
-}
-
 
 function doNodeOperations(evt) {
     if (addNodes) {
