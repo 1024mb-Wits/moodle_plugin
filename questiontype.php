@@ -68,6 +68,9 @@ class qtype_trees extends question_type {
         $question->q_type = $questiondata->options->q_type;
 
         // Traversals
+         $question->preorder = $questiondata->options->preorder;
+        $question->inorder = $questiondata->options->inorder;
+        $question->postorder = $questiondata->options->postorder;
        
 
         // BST
