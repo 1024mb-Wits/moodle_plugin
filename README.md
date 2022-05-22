@@ -6,8 +6,6 @@
 
 ## Tree plugin
 
-****
-
 This plugin can currently support the following features: 
 
 A lecturer should be able to create a new question of type AVL.
