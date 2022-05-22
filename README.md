@@ -1,32 +1,26 @@
 # 1024mb
-
-[![Build Status](https://travis-ci.org/Jaredrhd/Archotech.svg?branch=master)](https://travis-ci.org/Jaredrhd/Archotech)
-
-[![Coverage Status](https://coveralls.io/repos/github/Jaredrhd/Archotech/badge.svg)](https://coveralls.io/github/Jaredrhd/Archotech)
+[![1024-Wits](https://circleci.com/gh/1024mb-Wits/moodle_plugin/tree/AVL_widget.svg?style=shield&circle-token=bcc0c991b58c4207ef061a9a5ee69ce3fdfa36bb)](https://app.circleci.com/pipelines/gh/1024mb-Wits/moodle_plugin?branch=AVL_widget)
 
 
-Trees
-----------------------
+[![Coverage Status](https://coveralls.io/repos/github/1024mb-Wits/moodle_plugin/badge.svg?branch=AVL_widget)](https://coveralls.io/github/1024mb-Wits/moodle_plugin?branch=AVL_widget)
 
-The Tree plugin is a plugin that allows users to create Trees by placing, editing and deleting nodes.
+## Tree plugin
 
-Features
----------------------
+This plugin can currently support the following features: 
 
-* A lecturer should be able to assign an output to a question (ie the answer for the question)
-* A lecturer and student should be able to build a tree by adding nodes.
-* A lecturer and student should be able to edit the value of a node.
-* A lecturer and student should be able to drag a node to another place.
-* A lecturer and student should be able to delete a node and its children.
-* A lecturer should be able to choose what type of question to ask.
-* A student should be able to select nodes in the tree to build up a traversal string if the question type is a traversal question
-* A lecturer should be able to input BST values for a BST question for the student.
-* A lecturer or student should be able to randomly generate values for a node, or specifically put in their own value.
+A lecturer should be able to create a new question of type AVL.
+A lecturer should be able to alter the settings of the question they create; they will be able to choose what the question content actually is in terms of theory.
+A lecturer will be able to add the question they have created to quizzes or assessments on Moodle.
 
-###Installation
+A lecturer and a student should be able to construct and edit an AVL tree using the HTML widget provided by the plugin. The actions they can perform include:
 
-Download the zip from :
+* adding nodes to the canvas
+* adding edges between nodes on the canvas
+* dragging nodes across the canvas
+* deleting nodes and edges from the canvas
+* editing the value of nodes on the canvas
 
-* latest (master branch) - https://github.com/Jaredrhd/Archotech
 
-unzip it into the question/type folder, and then rename the new folder to trees if not already that.
+In later sprints, the plugin will be upgraded to automatically mark any answers submitted by the student.
+
+Visit the 1024mb Taiga [here](https://tree.taiga.io/project/rebekahvw-moodle-plugin-for-automated-assessment-in-data-structures/backlog).
