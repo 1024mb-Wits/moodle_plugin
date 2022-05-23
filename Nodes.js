@@ -77,12 +77,6 @@ class Node {
     GetRightChild() {
         return this.RC;
     }
-
-
-
-
-
-
 }
 class Edge {
 
@@ -109,10 +103,7 @@ class Edge {
         this.Node_2 = N2;
 
     }
-
-
 }
-
 class Tree_Node { //used for representing a node in the tree as a string
     constructor(Root, Is_Parent, Node_val, Parent_Node, LC, RC) {
         this.Root = Root
@@ -125,9 +116,10 @@ class Tree_Node { //used for representing a node in the tree as a string
 }
 
 
+
 var canvas; // The canvas element on which we== will draw.
 var graphics; // A 2D graphics context for drawing on the canvas.
-var addNodes, deleteNodes,moveNodes = false; // a boolean variable that determines whether the user wants to move the nodes or not
+var addNodes, deleteNodes, moveNodes = false; // a boolean variable that determines whether the user wants to move the nodes or not
 let n = 0; //Node number
 var Added_Nodes; //stores all of the nodes that has been added to the canvas
 Added_Nodes = new Array();
@@ -145,6 +137,7 @@ var x, y;
 function sum(a, b) {
     return a + b;
 }
+
 function installMouseHandler() {
 
     var dragging = false; // set to true when a drag action is in progress.
@@ -400,6 +393,7 @@ function PrintSubTree() {
     return nodenums;
 
 }
+
 function DrawAllEdges() {
     for (let i = 0; i < Added_Edges.length; i++) {
         var Val_1 = Added_Edges[i].GetNode_1();
@@ -633,10 +627,12 @@ function editNode(num, nodenum, nodeindx) {
 
 }
 module.exports = { sum, addNode, deleteNode, Check_Clicked, joinNodes, PrintSubTree, editNode };
+
 function getVal() { // gets the value from the input box
     const val = document.getElementById("nodenum").value;
     return val;
 }
+
 function paintComponent(whichSelection) { // gets the operation from the user
     console.log(whichSelection);
     switch (whichSelection) {
@@ -673,29 +669,4 @@ function doNodeOperations(evt) {
         DrawAllNodes();
     }
 
-    if (moveNodes) {
-        //MoveNode(evt);
-    }
-
-
-}
-
-function init() {
-    canvas = document.getElementById("canvas");
-    graphics = canvas.getContext("2d");
-    try {
-        canvas = document.getElementById("canvas");
-        graphics = canvas.getContext("2d");
-    } catch (e) {
-        document.getElementById("canvasholder").innerHTML =
-            "<p>Canvas graphics is not supported.<br>" +
-            "An error occurred while initializing graphics.</p>";
-        return;
-    }
-    addGraphicsContextExtras(graphics);
-    installMouseHandler();
-    graphics.fillStyle = "white";
-    graphics.fillRect(0, 0, canvas.width, canvas.height);
-    document.getElementById("canvas").addEventListener("dblclick", doNodeOperations);
-    document.getElementById("canvas").addEventListener("contextmenu", doNodeOperations); // double click on the canvas to add a node
 }
