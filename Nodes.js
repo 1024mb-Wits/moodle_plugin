@@ -395,10 +395,6 @@ function DrawAllEdges() {
                 Node_2 = Added_Nodes[j];
             }
         }
-        graphics.save();
-        graphics.strokeStyle = 'black';
-        graphics.strokeLine(Node_1.GetX(), Node_1.GetY(), Node_2.GetX(), Node_2.GetY());
-        graphics.restore();
     }
 }
 
@@ -621,23 +617,6 @@ function getVal() { // gets the value from the input box
     return val;
 }
 
-function paintComponent(whichSelection) { // gets the operation from the user
-    console.log(whichSelection);
-    switch (whichSelection) {
-        case "0": // user chooses to add nodes
-            addNodes = true;
-            moveNodes = false;
-            deleteNodes = false;
-            connectNodes = false;
-            break;
-        case "2": // user chooses to delete nodes
-            addNodes = false;
-            moveNodes = false;
-            deleteNodes = true;
-            connectNodes = false;
-            break;
-    }
-}
 
 function doNodeOperations(evt) {
     if (addNodes) {
