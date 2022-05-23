@@ -258,19 +258,7 @@ function addGraphicsContextExtras(graphics) {
 } // end of addGraphicsContextExtras()
 
 function DrawNewNode(Node, color) { //draws a new node
-    graphics.save();
-    graphics.fillStyle = "white";
-    graphics.strokeStyle = color;
-    graphics.fillCircle(Node.GetX(), Node.GetY(), 35);
-    graphics.strokeCircle(Node.GetX(), Node.GetY(), 35);
-    graphics.restore();
 
-    //draws the node number inside the cirlce
-    graphics.save();
-    graphics.font = "15px Arial";
-    graphics.fillStyle = "black";
-    graphics.fillText(Node.GetNodeNum(), Node.GetX() - 5, Node.GetY() + 2.5);
-    graphics.restore();
 
 }
 
