@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1653293471812" clover="3.2.0">
-  <project timestamp="1653293471812" name="All files">
+<coverage generated="1653294155348" clover="3.2.0">
+  <project timestamp="1653294155348" name="All files">
     <metrics statements="321" coveredstatements="160" conditionals="120" coveredconditionals="53" methods="48" coveredmethods="27" elements="489" coveredelements="240" complexity="0" loc="321" ncloc="321" packages="1" files="1" classes="1"/>
     <file name="Nodes.js" path="C:\Users\Acer\Documents\GitHub\moodle_plugin\Nodes.js">
       <metrics statements="321" coveredstatements="160" conditionals="120" coveredconditionals="53" methods="48" coveredmethods="27"/>
