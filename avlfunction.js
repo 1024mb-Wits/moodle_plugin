@@ -1,7 +1,10 @@
 // Create node
+var count = 0;
+var prev_node;
 const Node = function(item) {
     this.item = item;
     this.height = 1;
+    this.parent = null;
     this.left = null;
     this.right = null;
 }
@@ -176,17 +179,26 @@ const AVLTree = function() {
 
     // print the tree in pre - order
     this.preOrder = () => {
+        prev_node = root;
         preOrderHelper(root);
     }
 
     const preOrderHelper = (node) => {
-        if (node) {
 
-            console.log(node.item);
-            console.log("L");
+
+        if (node) {
+            if (count == 0) {
+                node.parent = -1;
+            } else {
+                node.parent = prev_node;
+                prev_node = node.item;
+            }
+            console.log(node.item, node.parent)
+            count++;
+            // console.log("L");
             preOrderHelper(node.left);
             preOrderHelper(node.right);
-            console.log("R");
+            // console.log("R");
         }
     }
 
