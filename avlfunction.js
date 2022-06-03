@@ -5,7 +5,6 @@ var TreeString = '';
 const Node = function(item) {
     this.item = item;
     this.height = 1;
-    this.parent = null;
     this.left = null;
     this.right = null;
 }
@@ -106,7 +105,7 @@ const AVLTree = function() {
     }
 
     //get node with minimum value
-    this.nodeWithMimumValue = (node) => {
+    this.nodeWithMinimumValue = (node) => {
         let current = node;
         while (current.left !== null) {
             current = current.left;
@@ -141,7 +140,7 @@ const AVLTree = function() {
                     root = temp;
                 }
             } else {
-                let temp = this.nodeWithMimumValue(root.right);
+                let temp = this.nodeWithMinimumValue(root.right);
                 root.item = temp.item;
                 root.right = deleteNodeHelper(root.right, temp.item);
             }
@@ -199,33 +198,39 @@ const AVLTree = function() {
     }
 }
 
-
+//function to create avl tree and return the pre order traversal 
 const CreateTree = (num) => {
     AVLTree();
 
     let i = 0;
     const numbers = [-1];
+    //checking for duplicates
     flag = true;
 
     while (i < num) {
+        //generate a random number
         let x = Math.floor((Math.random() * 20) + 1);
+        //set to true
         flag = true;
-
+        //traverse through array with the values to check duplicates
         for (let ii = 0; ii < numbers.length; ii++) {
+            //check
             if (x == numbers[ii]) {
                 flag = false;
 
 
             }
         }
+        //if no duplicates
         if (flag == true) {
-            console.log(x);
+            //console.log(x);
             numbers.push(x);
             insertNode(x);
             i++;
         }
 
     }
+    //do a pre order traversal on the avl tree
     preOrder();
     return (TreeString);
 }
