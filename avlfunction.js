@@ -1,6 +1,7 @@
 // Create node
 var count = 0;
 var prev_node;
+var TreeString = '';
 const Node = function(item) {
     this.item = item;
     this.height = 1;
@@ -184,45 +185,49 @@ const AVLTree = function() {
     }
 
     const preOrderHelper = (node) => {
-
-
         if (node) {
             if (count == 0) {
-                node.parent = -1;
+                TreeString = TreeString + node.item;
             } else {
-                node.parent = prev_node;
-                prev_node = node.item;
+                TreeString = TreeString + "," + node.item;
             }
-            console.log(node.item, node.parent)
             count++;
-            // console.log("L");
+
             preOrderHelper(node.left);
             preOrderHelper(node.right);
-            // console.log("R");
         }
     }
-
 }
 
-AVLTree();
-insertNode(17);
-insertNode(10);
-insertNode(2);
-insertNode(1);
-insertNode(20);
-insertNode(22);
-insertNode(11);
-insertNode(18);
-preOrder();
 
-/*const CreateTree = (num) => {
+const CreateTree = (num) => {
     AVLTree();
-    for (let i = 0; i < num; i++) {
+
+    let i = 0;
+    const numbers = [-1];
+    flag = true;
+
+    while (i < num) {
         let x = Math.floor((Math.random() * 20) + 1);
-        insertNode(x);
+        flag = true;
+
+        for (let ii = 0; ii < numbers.length; ii++) {
+            if (x == numbers[ii]) {
+                flag = false;
+
+
+            }
+        }
+        if (flag == true) {
+            console.log(x);
+            numbers.push(x);
+            insertNode(x);
+            i++;
+        }
+
     }
     preOrder();
-
+    return (TreeString);
 }
 
-CreateTree(12);*/
+console.log(CreateTree(12));
