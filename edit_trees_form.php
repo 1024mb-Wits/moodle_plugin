@@ -142,9 +142,6 @@ class qtype_trees_edit_form extends question_edit_form {
         $mform->hideIf('node_option', 'question_type', 'neq', 2);
 
         /** Hide property checkboxes unless respective options are checked */
-        $mform->hideIf('tree_properties', 'tree_option', 'notchecked');
-        $mform->hideIf('tree_properties', 'question_type', 'neq', 2);
-        $mform->hideIf('node_properties', 'node_option', 'notchecked');
-        $mform->hideIf('node_properties', 'question_type', 'neq', 2);
+    
     }
 }
