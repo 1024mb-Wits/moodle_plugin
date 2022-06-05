@@ -20,7 +20,7 @@ A lecturer and a student should be able to construct and edit an AVL tree using 
 * dragging nodes across the canvas
 * deleting nodes and edges from the canvas
 * editing the value of nodes on the canvas
-* adding the heights of each node o the canvas
+* adding the heights of each node to the canvas
 
 
 In later sprints, the plugin will be upgraded to automatically mark any answers submitted by the student.
