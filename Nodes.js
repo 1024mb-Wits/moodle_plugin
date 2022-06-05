@@ -138,146 +138,6 @@ function sum(a, b) {
     return a + b;
 }
 
-function installMouseHandler() {
-
-    var dragging = false; // set to true when a drag action is in progress.
-    // coordinates of mouse at start of drag.
-    function doMouseDown(evt) {
-        // This function is called when the user presses a button on the mouse.
-        // Only the main mouse button will start a drag.
-        if (dragging) {
-            return; // if a drag is in progress, don't start another.
-        }
-        if (evt.button != 0) {
-            return; // don't respond unless the button is the main (left) mouse button.
-        }
-        // mouse position in canvas coordinates
-
-        var r = canvas.getBoundingClientRect();
-        x = Math.round(evt.clientX - r.left); // translate mouse position from screen coords to canvas coords.
-        y = Math.round(evt.clientY - r.top);
-
-        if (x > 800 || y > 600) {
-            return;
-
-        }
-        dragging = true;
-        Node_Selected = Check_Clicked(x, y);
-        graphics.clearRect(0, 0, canvas.width, canvas.height);
-        DrawAllEdges();
-        DrawAllNodes();
-
-        console.log("clicked on " + Node_Selected.GetNodeNum())
-
-        if (Node_Selected.GetNodeNum() != -1 && Node_Selected.GetIs_Selected()) {
-            openPopup();
-
-        } else {
-            closePopup();
-        }
-        if (dragging) {
-            startX = prevX = x;
-            startY = prevY = y;
-            document.addEventListener("mousemove", doMouseMove, false);
-            document.addEventListener("mouseup", doMouseUp, false);
-        }
-    }
-
-    function doMouseMove(evt) {
-        // This function is called when the user moves the mouse during a drag.
-        if (!dragging) {
-            return; // (shouldn't be possible)
-        }
-        var x, y; // mouse position in canvas coordinates
-        var r = canvas.getBoundingClientRect();
-        x = Math.round(evt.clientX - r.left);
-        y = Math.round(evt.clientY - r.top);
-        if (Node_Selected.GetNodeNum() == -1) {
-            return;
-        } else {
-            graphics.clearRect(0, 0, canvas.width, canvas.height);
-            var Old_x = Node_Selected.GetX();
-            var Old_y = Node_Selected.GetY();
-            Node_Selected.SetX(x);
-            Node_Selected.SetY(y);
-            var X_Diff = x - Old_x;
-            var Y_Diff = y - Old_y;
-            Apply_Tree_Move(X_Diff, Y_Diff, Node_Selected);
-            DrawNewNode(Node_Selected);
-        }
-
-        DrawAllEdges();
-        DrawAllNodes();
-
-        /*------------------------------------------------------------*/
-
-        prevX = x; // update prevX,prevY to prepare for next call to doMouseMove
-        prevY = y;
-
-    }
-
-    function doMouseUp(evt) {
-        // This function is called when the user releases a mouse button during a drag.
-
-        if (!dragging) {
-
-            //MoveNode(evt);
-            return; // (shouldn't be possible)
-
-        }
-        dragging = false;
-        graphics.clearRect(0, 0, canvas.width, canvas.height);
-        DrawAllEdges();
-        DrawAllNodes();
-
-        document.removeEventListener("mousemove", doMouseMove, false);
-        document.removeEventListener("mouseup", doMouseMove, false);
-    }
-
-    canvas.addEventListener("mousedown", doMouseDown, false);
-
-} // end installMouseHandler
-
-function addGraphicsContextExtras(graphics) {
-    graphics.strokeLine = function(x1, y1, x2, y2) {
-        this.beginPath();
-        this.moveTo(x1, y1);
-        this.lineTo(x2, y2);
-        this.stroke();
-    }
-    graphics.fillCircle = function(x, y, r) {
-        this.beginPath();
-        this.arc(x, y, r, 0, 2 * Math.PI, false);
-        this.fill();
-    }
-    graphics.strokeCircle = function(x, y, radius) {
-        this.beginPath();
-        this.arc(x, y, radius, 0, 2 * Math.PI, false);
-        this.stroke();
-    }
-} // end of addGraphicsContextExtras()
-
-function DrawNewNode(Node, color) { //draws a new node
-
-
-}
-
-function Apply_Tree_Move(x_change, y_change, Root_Num) {
-
-    for (let j = 1; j < subtree.length; j++) {
-
-        for (let i = 0; i < Added_Nodes.length; i++) {
-            if (subtree[j].GetNodeNum() == Added_Nodes[i].GetNodeNum()) {
-                ("Changing " + subtree[j]);
-                Added_Nodes[i].SetX(Added_Nodes[i].GetX() + x_change);
-                Added_Nodes[i].SetY(Added_Nodes[i].GetY() + y_change);
-            }
-
-        }
-    }
-}
-
-
 function joinNodes(check) {
     var pcheck = check;
 
@@ -382,24 +242,6 @@ function PrintSubTree() {
 
 }
 
-function DrawAllEdges() {
-    for (let i = 0; i < Added_Edges.length; i++) {
-        var Val_1 = Added_Edges[i].GetNode_1();
-        var Val_2 = Added_Edges[i].GetNode_2();
-        var Node_1;
-        var Node_2;
-        for (let j = 0; j < Added_Nodes.length; j++) {
-            if (Val_1 == Added_Nodes[j].GetNodeNum()) {
-                Node_1 = Added_Nodes[j];
-            } else if (Val_2 == Added_Nodes[j].GetNodeNum()) {
-                Node_2 = Added_Nodes[j];
-            }
-        }
-    }
-}
-
-
-
 function addNode(posx, posy, num) {
     n++; //increments the index of the Node
     var New_Node = new Node(posx, posy, num, n); //create new node
@@ -472,23 +314,6 @@ function deleteNode(nodenum, nodeindx) {
 
     console.log("Edges are -->", Added_Edges);
     return { x, y, Num_In_Node };
-
-}
-
-function DrawAllNodes() {
-    for (let i = 0; i < Added_Nodes.length; i++) {
-
-        if (Added_Nodes[i].GetIs_Selected() == true) {
-            if (Added_Nodes[i].GetRoot() == true) {
-                DrawNewNode(Added_Nodes[i], "red");
-            } else {
-                DrawNewNode(Added_Nodes[i], "blue");
-            }
-        } else {
-            DrawNewNode(Added_Nodes[i], "black");
-        }
-
-    }
 
 }
 
@@ -611,29 +436,3 @@ function editNode(num, nodenum, nodeindx) {
 
 }
 module.exports = { sum, addNode, deleteNode, Check_Clicked, joinNodes, PrintSubTree, editNode };
-
-function getVal() { // gets the value from the input box
-    const val = document.getElementById("nodenum").value;
-    return val;
-}
-
-
-function doNodeOperations(evt) {
-    if (addNodes) {
-        num = getVal(); //gets the number to be drawn inside a node
-        addNode(x, y, num);
-        DrawAllNodes();
-        document.getElementById("nodenum").focus();
-    }
-
-    if (deleteNodes && (n != 0)) {
-        //function to delete nodes
-        nnum = Node_Selected.GetNodeNum();
-        indnum = Node_Selected.GetArrIndex();
-        deleteNode(nnum, indnum);
-        graphics.clearRect(0, 0, canvas.width, canvas.height);
-        DrawAllEdges();
-        DrawAllNodes();
-    }
-
-}
