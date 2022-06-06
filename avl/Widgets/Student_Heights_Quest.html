@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<!--
+   This web page does the minimal setup for using mouse events along
+   with 2D canvas graphics.
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Height Question</title>
+    <link rel="StyleSheet" href="styles.css">
+    <style>
+        /* This style section is here to make the canvas more obvious on the
+       page.  It is white on a light gray page background, with a thin
+       black border.  Also, turn off text selection to avoid having
+       selection interfere with mouse action. */
+
+        body {
+            background-color: #28aee8;
+            -webkit-user-select: none;
+            /* turn off text selection  / Webkit */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE 10  */
+            -o-user-select: none;
+            /* Opera */
+            user-select: none;
+        }
+
+        canvas {
+            background-color: white;
+            display: block;
+        }
+
+        #canvasholder {
+            border: 2px solid black;
+            float: left;
+            /* This makes the border exactly fit the canvas. */
+        }
+    </style>
+     <script src="Nodes.js">
+
+        "use strict";  // gives improved error-checking in scripts.
+        /**
+         * This function returns a string representing a random RGB color.
+         * The returned string can be assigned as the value of graphics.fillStyle
+         * or graphics.strokeStyle.
+         */
+
+    </script>
+    <script src="RandomAVL.js"></script>
+
+
+</head>
+
+<body onload="init()">
+    <!-- the onload attribute here is what calls the init() function -->
+    <br>
+    <br>
+    <h2>Height Question</h2>
+    <br>
+    <noscript>
+        <!-- This message will be shown in the page if JavaScript is not available. -->
+        <p>JavaScript is required to use this page.</p>
+    </noscript>
+
+    <hidden input type="text" id="TreeString" name="TreeString"></hidden> <!--Hidden element that database string can be assigned to-->
+    <button onclick="GenerateQuest()">Generate Tree</button>
+    <br>    <button onclick="ShowInstructions()">Help</button>
+
+
+
+    <!-- check box for determining whether user wants move a node-->
+
+    <div class="form-popup" id="myForm">
+        <div class="form-container">
+            <h1>Height Value </h1>
+
+
+            <input type="text" id="HeightValue" placeholder="Enter height for selected node" name="HValue" required>
+
+
+            <button type="submit" class="btn" onclick="AddNodeHeight()">Submit Height Value</button>
+
+            <button type="button" class="btn cancel" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <script>
+
+
+        function GetTreeArr(){ //gets preorder traversal of an AVL tree
+             document.getElementById("TreeString").value="11,4,2,1,10,7,19,17,20"; //Set for testing purposes ,database traversal string
+             //needs to be set here eg: document.getElementById("TreeString").value=DbTravStr;
+            let str= document.getElementById("TreeString").value;
+            let arrStrTree=str.split(",");
+            let arrTree=[];
+            for (let i=0;i<arrStrTree.length;i++){
+                arrTree.push(parseInt(arrStrTree[i]));
+            }
+            return arrTree;
+        }
+        function ShowInstructions(){
+            alert("1.Click on generate tree.\n2.Click on a node to set it's height.")
+        }
+
+        function GenerateQuest(){
+            let arrTree=GetTreeArr();
+            Generate_AVL_Quest(arrTree);
+        }
+
+
+        let popup = document.getElementById("popup");
+
+        function openPopup() {
+            //close pop-up
+             document.getElementById("HeightValue").value="";
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closePopup() {
+            Node_Selected.SetIs_Selected(false);
+            Selected_Nodes[0]=-1;
+            document.getElementById("myForm").style.display = "none";
+        }
+
+    </script>
+
+
+    <div id="canvasholder">
+        <canvas id="canvas" width="800" height="600">
+            <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
+            Canvas not supported.
+        </canvas>
+    </div>
+
+</body>
+
+</html>
