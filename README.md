@@ -15,12 +15,12 @@ A lecturer will be able to add the question they have created to quizzes or asse
 
 A lecturer and a student should be able to construct and edit an AVL tree using the HTML widget provided by the plugin. The actions they can perform include:
 
-* adding nodes to the canvas
-* adding edges between nodes on the canvas
-* dragging nodes across the canvas
-* deleting nodes and edges from the canvas
-* editing the value of nodes on the canvas
-* adding the heights of each node to the canvas
+* adding nodes to the canvas.
+* adding edges between nodes on the canvas.
+* dragging nodes across the canvas.
+* deleting nodes and edges from the canvas.
+* editing the value of nodes on the canvas.
+* adding the heights of each node to the canvas.
 
 
 In later sprints, the plugin will be upgraded to automatically mark any answers submitted by the student.
